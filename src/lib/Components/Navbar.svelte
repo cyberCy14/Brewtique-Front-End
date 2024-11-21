@@ -14,6 +14,7 @@
     }
 
     function handleLogout(){
+        // alert("Do you want to log out?");
         logout();
     }
 
