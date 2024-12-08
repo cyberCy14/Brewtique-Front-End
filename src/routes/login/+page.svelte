@@ -13,7 +13,6 @@
         if($isAuthenticated == true){
            goto('/coffee_options'); 
         }
-
     });
     
 
