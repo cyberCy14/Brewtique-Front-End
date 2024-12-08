@@ -15,9 +15,23 @@
     let coffeeItems = [];
 
     onMount(async () => {
-        const response = await fetch('/shopApi/shopCoffees');
+    try {
+        const response = await fetch('http://localhost:8000/api/shopCoffees', {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch coffee items.');
+        }
         coffeeItems = await response.json();
-    });
+    } catch (error) {
+        console.error('Error fetching coffee items:', error);
+    }
+});
 
 
     // array of coffee items
@@ -173,6 +187,7 @@
             <div class="scroll-container">
                 <button class="arrow left" on:click={scrollLeft}> ❮ </button>
                 <div class="wrapper" bind:this={scrollContainer}>
+
                     {#each coffeeItems as coffee}
                         <a href={`/Add_to_Cart?title=${encodeURIComponent(coffee.title)}&price=${encodeURIComponent(coffee.price)}&description=${encodeURIComponent(coffee.description2)}&img=${encodeURIComponent(coffee.img)}`} class="mini-container">
                             <p class="coffee-title">{coffee.title}</p>
@@ -182,6 +197,7 @@
                             </div>
                         </a>
                     {/each}
+
                 </div>
                 <button class="arrow right" on:click={scrollRight}>❯</button>
             </div>
