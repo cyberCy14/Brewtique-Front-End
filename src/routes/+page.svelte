@@ -22,6 +22,7 @@
     <!-- Coffee Section -->
     <section id="coffee">
         <CoffeeSection/>
+
     </section>
 
     <!-- Shop Section -->

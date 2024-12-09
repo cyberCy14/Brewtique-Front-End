@@ -160,7 +160,7 @@
 
     .bar {
         display: block;
-        width: 25px;
+        width: 25px;    
         height: 3px;
         margin: 6px auto;
         transition: all 0.3s ease-in-out;
