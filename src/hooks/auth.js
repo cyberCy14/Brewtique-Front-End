@@ -11,7 +11,6 @@ export const fetchUser = async () => {
         if (localStorage.getItem('token') !== null) {
             isAuthenticated.set(true);
             userName.set(localStorage.getItem('username'));
-            // goto('/coffee_options');
         } else {
             return;
         }
