@@ -13,7 +13,7 @@
                 roasted to perfection. From bold and robust to 
                 smooth and delicate, we have something to suit 
                 every taste.</p>
-            <a class="shop-now" href="/coffee_options">Shop Now</a>
+            <a class="shop-now" href="/coffees">Shop Now</a>
         </div>
     </div>
 </section>

@@ -20,8 +20,8 @@
     });
 </script>
 
-<main>
-    <section>
+<main id="location" >
+    <section >
         <div class="container">
             <h2 class="text">Location</h2>
             <div class="slideshow-container">
@@ -43,7 +43,6 @@
         height: auto;
         justify-content: center;
         margin-bottom: 15em;
-        margin-top: -10em   ;
         align-items: center;
     }
 

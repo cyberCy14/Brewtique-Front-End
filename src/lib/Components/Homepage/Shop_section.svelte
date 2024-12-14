@@ -16,7 +16,7 @@
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch random coffee items.');
+                // throw new Error('Failed to fetch random coffee items.');
             }
 
             coffeeItems = await response.json();
@@ -66,7 +66,7 @@
                 </div>
                 <button class="arrow right" on:click={scrollRight}>❯</button>
             </div>
-            <a class="more-btn" href="/coffee_options">See More</a>
+            <a class="more-btn" href="/coffees">See More</a>
         </div>
     </section>
 </main>
