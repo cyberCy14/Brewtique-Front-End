@@ -11,7 +11,7 @@
     onMount(async () => {
         fetchUser();
         if($isAuthenticated == true){
-           goto('/coffee_options'); 
+           goto('/coffees'); 
         }
     });
     
@@ -50,7 +50,7 @@
                 localStorage.setItem('token', data.access_token); 
                 localStorage.setItem('username', data.user.name);
                 isAuthenticated.set(true);
-                goto('/coffee_options'); 
+                goto('/coffees'); 
             } else {
                 console.error('Login failed:', data);
                 alert('Login failed: ' + data.message); 
@@ -81,12 +81,6 @@
                 </div>
                 <button type="submit" class="btn">Login</button>
             </form>
-
-            <div class="divider">OR</div>
-            <button class="google-btn">
-                <img src="{google}" alt="Google Logo">
-                Continue with Google
-            </button>
             <p class="footer-text">Don't have an account? <a href="/register">Sign up</a></p>
         </div>
     </div>
@@ -188,36 +182,6 @@ label{
 .btn:hover {
     background-color: var(--text-white);
     color: var(--text-black);
-}
-
-.divider {
-    text-align: center;
-    margin: 1rem 0;
-    color: #888;
-}
-
-.google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: white;
-    width: 100%;
-    font-weight: bold;
-    font-size: 1.1em;
-    transition: box-shadow 0.3s;
-}
-
-.google-btn img {
-    width: 20px;
-    margin-right: 10px;
-}
-
-.google-btn:hover {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .footer-text {

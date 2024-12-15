@@ -1,94 +1,103 @@
 <script>
-import star from "$lib/assets/icons/rating_star.svg";
-import peso from "$lib/assets/icons/peso.svg";
+    import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
+    import { page } from "$app/stores";
+    import { cartData } from "$lib/stores/cartStore";
 
-import { onMount } from "svelte";
+    let title = "";
+    let description = "";
+    let price = 0;
+    let img = "";
+    let cup_size = '';  
+    let quantity = 1;
+    let cupSize_addOns = 0;
 
+    const cupSizes = [
+        { value: 'small', label: 'Small (8 oz)' },
+        { value: 'medium', label: 'Medium (12 oz)' },
+        { value: 'large', label: 'Large (16 oz)' }
+    ];
 
-let starRating = 5;
-const repeatedStar = Array(starRating).fill();
-const numReviews = 100;
-let price = 120.50
-let title = "";
-let description = "";
-let img;
-
-const totalPrice = 120.50;
-
-const cupSizes = [
-    {value: 'small', label:'Small (8 oz)'},
-    {value: 'medium', label:'Medium (12 oz)'},
-    {value: 'large', label:'Large (16 oz)'},
-]
-
-let selectedCup = '';
-let quantity = 1; 
-
-function increaseQuantity() {
-    quantity += 1;
-}
-
-function decreaseQuantity() {
-    if (quantity > 1) {
-        quantity -= 1; 
+    function increaseQuantity() {
+        quantity += 1;
     }
-}
+
+    function decreaseQuantity() {
+        if (quantity > 1) {
+            quantity -= 1;
+        }
+    }
+
+    function navigateToCart() {
+        goto('/cart');
+    }
+
+    function updatePrice() {
+        switch (cup_size) {
+            case 'small':
+                cupSize_addOns = 10;  
+                break;
+            case 'medium':
+                cupSize_addOns = 15;  
+                break;
+            case 'large':
+                cupSize_addOns = 20;  
+                break;
+            default:
+                cupSize_addOns = 0;  
+                break;
+        }
+    }
+
+    $: totalPrice = (price + cupSize_addOns) * quantity;
+
+    onMount(() => {
+        const params = new URLSearchParams($page.url.search);
+        title = params.get("title") || "Unknown Coffee";
+        description = params.get("description") || "No available description.";
+        quantity = parseInt(params.get("quantity")) || 1;
+        price = parseInt(params.get("price")) || 0;
+        totalPrice = parseInt(params.get("totalPrice")) || 0;
+        cup_size = params.get("cupSize") || ''; 
+        img = params.get("img") || "";
+    });
 
 
+    updatePrice();
 
-// Extracting the URL parameters fom Shop_section.svelte
-onMount(() => {
-    const params = new URLSearchParams(window.location.search);
-    title = params.get("title") || "Unknown Coffee";
-    description = params.get("description") || "No available description.";
-    price = parseFloat(params.get("price")) || price;
-    img = params.get("img") || " ";
-});
-
-
+    $: cartData.set({
+        title,
+        description,
+        price,
+        quantity,
+        cup_size,
+        totalPrice,
+        img,
+    });
 </script>
 
-
 <main>
-
     <section>
         <!-- image section; 60% -->
         <div class="img-sec">
-            <img class="img" src= {img} alt="image area">
+            <img class="img" src={img} alt="image area" />
         </div>
 
         <!-- text section; 40% -->
         <div class="text-sec">
-            <!-- name of the coffee -->
-            <div class="coffee-name"> {title} </div>
-
-            <!-- ratings and reviews -->
-            <div class="rate-review"> 
-                <span class="ratings">
-                    <div class="star-ratings">
-                        <div>
-                            {#each repeatedStar as _, index}
-                            <img src={star} class="star" alt="stars">
-                             {/each}
-                        </div>
-                        <div>Ratings</div>
-                    </div>
-                </span> 
-                <span class="reviews"> {numReviews} Reviews</span>
-            </div>
+            <div class="coffee-name">{title}</div>
 
             <!-- price -->
             <div class="price-sec">
-                <img src={peso} class="peso" alt="peso">
                 <span class="price">{price}</span>
             </div>
 
             <!-- description -->
             <div class="description">
-                   <p class="desc-text">{description}</p>
+                <p class="desc-text">{description}</p>
             </div>
 
-            <!-- options for coffee cup sizes-->
+            <!-- options for coffee cup sizes -->
             <div class="cup-sizes-sec">
                 <p>Cup Sizes</p>
                 <div class="options">
@@ -97,10 +106,12 @@ onMount(() => {
                             <input
                                 type="radio"
                                 id={value}
-                                name="cup-size" 
-                                bind:group={selectedCup} 
-                                value={value}/>
-                            <label for={value}>{label}</label> 
+                                name="cup-size"
+                                bind:group={cup_size}
+                                value={value}
+                                on:change={updatePrice} 
+                            />
+                            <label for={value}>{label}</label>
                         </div>
                     {/each}
                 </div>
@@ -108,23 +119,20 @@ onMount(() => {
 
             <!-- add to cart and no. of coffee buttons -->
             <div class="cart-buttons">
+                <div class="quantity-sec">
+                    <button on:click={decreaseQuantity}>-</button>
+                    <span class="quantity">{quantity}</span>
+                    <button on:click={increaseQuantity}>+</button>
+                </div>
 
-            <div class="quantity-sec">
-                <button on:click={decreaseQuantity}>-</button>
-                <span class="quantity">{quantity}</span> 
-                <button on:click={increaseQuantity}>+</button>
-            </div>
-
-                <button class="add_to_cart"> 
-                    Add to Cart |  P
-                    {totalPrice}
+                <button class="add_to_cart" on:click={navigateToCart}>
+                    Add to Cart | ₱{totalPrice}
                 </button>
-
             </div>
         </div>
     </section>
-
 </main>
+
 
 
 <style>
@@ -165,22 +173,6 @@ onMount(() => {
         color: var(--text-black);
     }
 
-    .star {
-        width: 1em;
-    }
-
-    .star-ratings {
-        display: flex;
-        gap: .3em;
-    }
-
-    .rate-review {
-        display: flex;
-        flex-direction: row;
-        color: var(--text-black);
-        gap: 1.5em;
-        font-size: 1.2em;
-    }
 
     .price-sec {
         display: flex;

@@ -13,6 +13,8 @@
             name: formData.get('name'),
             email: formData.get('email'),
             password: formData.get('password'),
+            phone_number: formData.get('phone_number'),
+            address: formData.get('address'),
             password_confirmation: formData.get('confirm-password')
         };
 
@@ -35,7 +37,7 @@
 
             if (response.ok) {
                 console.log('Registration successful:', data);
-                window.location.href = '/';
+                window.location.href = '/login';
             } else {
                 alert(`Registration failed: ${data.message || 'An error occurred.'}`);
             }
@@ -66,6 +68,14 @@
                     <input type="email" name="email" id="email" placeholder="Enter email" required>
                 </div>
                 <div class="input-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="phone_number" name="phone_number" id="phone_number" placeholder="Enter phone number" required>
+                </div>
+                <div class="input-group">
+                    <label for="address"> Home Address</label>
+                    <input type="address" name="address" id="address" placeholder="Enter address" required>
+                </div>
+                <div class="input-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" placeholder="Enter password" required>
                 </div>
@@ -76,11 +86,6 @@
                 <button type="submit" class="btn">Sign Up</button>
             </form>
 
-            <div class="divider">OR</div>
-            <button class="google-btn">
-                <img src="{google}" alt="Google Logo">
-                Continue with Google
-            </button>
             <p class="footer-text">Already have an account? <a href="/login">Login</a></p>
         </div>
     </div>
@@ -189,29 +194,6 @@ label{
     color: #888;
 }
 
-.google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: white;
-    width: 100%;
-    font-size: 1.1em;
-    font-weight: bold;
-    transition: box-shadow 0.3s;
-}
-
-.google-btn img {
-    width: 20px;
-    margin-right: 10px;
-}
-
-.google-btn:hover {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
 
 .footer-text {
     text-align: center;

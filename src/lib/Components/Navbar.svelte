@@ -1,38 +1,40 @@
 <script>
-    import { isAuthenticated , fetchUser, logout} from "../../hooks/auth.js";
+    import { isAuthenticated, fetchUser, logout } from "../../hooks/auth.js";
     import inverted_logo from "$lib/assets/backgrounds/inverted_logo.png";
     import cart from "$lib/assets/icons/cart.svg";
-    import search from "$lib/assets/icons/search.svg";
+    import profile from "$lib/assets/icons/profile.svg";
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
 
-    let isMenuActive = false;
+    let isMenuActive = false; 
+    let isDropdownOpen = false; 
 
-    function handleLogin() {
-        goto('/login');
-    }
 
-    function handleLogout(){
-        // alert("Do you want to log out?");
+    function handleLogout() {
         logout();
     }
 
-    onMount( () => {
+    const toggleMenu = () => {
+        isMenuActive = !isMenuActive;
+    };
+
+    function toggleDropdown(event) {
+        isDropdownOpen = !isDropdownOpen;
+        event.stopPropagation(); 
+    }
+
+    function closeDropdown() {
+        isDropdownOpen = false;
+    }
+
+    onMount(() => {
         fetchUser();
     });
 
-
-
-    const toggleMenu = () => {
-        isMenuActive = !isMenuActive;  
-    };
-
-    $: isSearchPage = $page.url.pathname.startsWith('/coffee_options');
+    $: isSearchPage = $page.url.pathname.startsWith('/coffees');
     $: isSearchPage2 = $page.url.pathname.startsWith('/Merch');
-
-</script>  
-
+</script>
 
 <header>
     <nav class="container">
@@ -45,37 +47,60 @@
 
         {#if !isSearchPage && !isSearchPage2}
             <!-- Main links -->
-            <div class="major-links" class:active={isMenuActive}>
+            <div class="major-links {isMenuActive ? 'active' : ''}">
                 <a href="/#coffee" class="section-link">Coffee</a>
                 <a href="/#shop" class="section-link">Shop</a>
                 <a href="/#merch" class="section-link">Merch</a>
                 <a href="/#location" class="section-link">Location</a>
                 <a href="/#about" class="section-link">About Us</a>
             </div>
-        {:else}
-            <!-- Search area -->
-            <div class="search-area">
-                <input type="text" placeholder="Search..." class="search-input" />
-                <img src={search} alt="search icon" class="search-icon" />
-            </div>
         {/if}
 
-        <!-- Icon buttons -->
-        <div class="icons">
-            <a href="/cart" class="icons">
-                <img src={cart} class="cart-icon" alt="Cart icon" />
-            </a>
 
-            <!-- Profile icon -->
+
+        <!-- Icon buttons -->
+        <div class="icons" on:click={closeDropdown}>
+            <!-- Cart icon -->
             {#if $isAuthenticated == true}
-                <button class="log-out" on:click={handleLogout}>Log Out</button>
-            {:else}
-                <button class="log-in" on:click={handleLogin}>Log In</button>
+                    <a href="/cart" class="icons">
+                        <img src={cart} class="cart-icon" alt="Cart icon" />
+                    </a>
+
+
+                    <!-- Profile Dropdown -->
+                    <div class="profile-container" 
+                        on:click|stopPropagation={toggleDropdown}
+                    >
+                        <img src={profile} class="profile-icon" alt="Profile icon" />
+
+                        {#if isDropdownOpen}
+                            <div class="dropdown-menu">
+                                <a href="/Profile" class="dropdown-item">Profile</a>
+
+                                {#if $isAuthenticated == true}
+                                    <a class="dropdown-item logout" on:click={handleLogout}>LogOut</a>
+                                {:else}
+                                    <a class="dropdown-item logout" on:click={handleLogout}>LogIn</a>
+                                {/if}
+
+                            </div>  
+                        {/if}
+                    </div>
+
+                {:else}
+                    <a  class="log-in" href="/login">Login</a>
+                    <a  class="sign-up" href="/register">Signup</a>
             {/if}
 
 
+
+           
+
+
+
+
             <!-- Hamburger button -->
-            <button class="hamburger" class:active={isMenuActive} on:click={toggleMenu}>
+            <button class="hamburger {isMenuActive ? 'active' : ''}" on:click={toggleMenu}>
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -152,6 +177,10 @@
         width: 2.5em;
     }
 
+    .profile-icon {
+        width: 2em;
+    }
+
     .hamburger {
         display: none;
         cursor: pointer;
@@ -167,44 +196,39 @@
         background-color: var(--text-white);
     }
 
-
-    .search-area{
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+    .profile-container {
+        position: relative;
     }
 
-    .search-input{
-        padding: 0.5rem;
-        border: 1px solid var(--text-white);
-        border-radius: 5rem;
-        width: 40em;
-        font-size: 1.3rem;
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        z-index: 100;
     }
 
-    .search-input:focus{
-        outline: none;
-        border-color: var(--text-white);
-    }
-
-    .search-icon{
-        display: flex;
-        width: 2.5em;
-        height: 2.5em;
+    .dropdown-item {
+        display: block;
+        padding: 20px;
+        text-decoration: none;
+        font-size: 1.3em;
+        color: #333;
         cursor: pointer;
-        padding: 0.25em;
-        transition: transform 0.2s ease;
     }
-
-    .search-icon:hover{
-        transform: scale(1.1);
+    .dropdown-item:hover {
+        background-color: #f0f0f0;
     }
 
 
-    .log-in {
+
+    .log-in, .sign-up{
     background-color: var(--primary-color); 
     color: var(--text-white);              
-    font-size: 1.3em;            
+    font-size: 1.5em;            
     padding: 5px 5px;         
     border: none;               
     border-radius: 5px;         
@@ -212,16 +236,16 @@
     transition: background-color 0.3s ease; 
     }
 
-    .log-in:hover {
+    .log-in:hover, .sign-up:hover {
     background-color:var(--primary-color);  
     }
 
-    .log-in:focus {
+    .log-in:focus, .sign-up:focus{
     outline: none;             
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);  
     }
 
-    .log-out {
+    /* .log-out {
     background-color: var(--primary-color); 
     color: var(--text-white);              
     font-size: 1.3em;            
@@ -239,7 +263,7 @@
     .log-out:focus {
     outline: none;             
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);  
-    }
+    } */
 
 
 
@@ -254,13 +278,6 @@
             height: auto;
         }
 
-        .search-area {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: 60%; 
-        margin: 0 auto; 
-    }
     }
 
 
@@ -275,13 +292,7 @@
             height: auto;
         }
 
-        .search-area {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: 60%; 
-        margin: 0 auto; 
-    }
+
     }
 
 
@@ -345,32 +356,5 @@
             transform: translateY(-9px) rotate(-45deg);
         }
 
-        .search-area {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: 80%; 
-        margin: 0 auto; 
-    }
-
-    .search-input {
-        padding: 0.5rem;
-        border: 1px solid var(--text-white);
-        border-radius: 5rem;
-        width: 100%; 
-        font-size: 1.1rem; 
-    }
-
-    .search-icon {
-        width: 2em; 
-        height: 2em;
-        cursor: pointer;
-        padding: 0.25em;
-        transition: transform 0.2s ease;
-    }
-
-    .search-icon:hover {
-        transform: scale(1.1);
-    }
     }
 </style>

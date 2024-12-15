@@ -219,7 +219,6 @@
                         <h3>{merchItem.title}</h3>
                         <img src={merchItem.img} alt={merchItem.title} />
                         <p class="description">{merchItem.description}</p>
-                        <!-- This will utilize URL Parameters -->
                         <a class="add-to-cart" href={`/Add_to_Cart_merch?title=${encodeURIComponent(merchItem.title)}&price=${encodeURIComponent(merchItem.price)}&description=${encodeURIComponent(merchItem.description2)}&img=${encodeURIComponent(merchItem.img)}`}>
                             Add to cart | ₱{merchItem.price}
                         </a>
