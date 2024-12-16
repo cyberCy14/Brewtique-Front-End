@@ -27,7 +27,7 @@
             </div>
   
             <div class="price-info">
-              <span class="original-price">₱{cart.price}</span>
+              <!-- <span class="original-price">₱{cart.price}</span> -->
               <span class="discounted-price">₱{cart.totalPrice}</span>
             </div>
           </div>
@@ -43,129 +43,139 @@
     {/if}
   </main>
   
-  <style>
-    /* Cart Container */
-    .cart-item {
+
+
+  
+<style>
+
+  main {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--text-white);
+      /* padding: 2rem; */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin-top:-5rem;
+  }
+
+  .cart-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      padding: 15px;
-      margin: 20px auto;
-      margin-top: 10em;
-      max-width: 800px;
-      transition: box-shadow 0.2s ease-in-out;
-    }
-  
-    .cart-item:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-  
-    /* Product Area */
-    .product-area {
+      align-items: flex-start;
+      background-color: var(--text-white);
+      border: 1px solid var(--primary-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 2rem 0;
+      max-width: 1000px;
+      width: 100%;
+      transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .cart-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .product-area {
       display: flex;
-      flex: 1;
       align-items: center;
-    }
-  
-    .product-image {
-      width: 100px;
-      height: 100px;
+      gap: 1.5rem;
+      flex: 1;
+  }
+
+  .product-image {
+      width: 120px;
+      height: 120px;
       object-fit: cover;
       border-radius: 8px;
-      margin-right: 20px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-    }
-  
-    .product-details {
+      border: 2px solid var(--primary-color);
+      background-color: var(--text-white);
+  }
+
+  .product-details {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      flex: 1;
-    }
-  
-    .product-title {
-      font-size: 1.4em;
+      gap: 0.5rem;
+      max-width: 60%;
+  }
+
+  .product-title {
+      font-size: 1.4rem;
       font-weight: bold;
-      color: #333;
-      margin-bottom: 8px;
-    }
-  
-    .product-description {
-      font-size: 0.95em;
-      color: #666;
-      margin-bottom: 10px;
-    }
-  
-    .product-variations {
-      font-size: 0.9em;
-      color: #444;
-      margin-bottom: 10px;
-    }
-  
-    .variation-label {
+      color: var(--text-black);
+      margin: 0;
+  }
+
+  .product-description {
+      font-size: 1rem;
+      color: var(--text-black);
+      opacity: 0.8;
+  }
+
+  .product-variations {
+      font-size: 0.95rem;
+      color: var(--text-black);
+  }
+
+  .variation-label {
       font-weight: 600;
       margin-right: 5px;
-    }
-  
-    .variation-value {
+  }
+
+  .variation-value {
       font-weight: 400;
-    }
-  
-    .price-info {
+  }
+
+  .price-info {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.1em;
-      margin-top: 5px;
-    }
-  
-    .original-price {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+  }
+
+  .original-price {
       text-decoration: line-through;
-      color: #888;
-    }
-  
-    .discounted-price {
-      color: #e74c3c;
+      color: var(--primary-color);
+      font-size: 1rem;
+  }
+
+  .discounted-price {
+      color: var(--primary-color);
       font-weight: bold;
-      font-size: 1.3em;
-    }
-  
-    /* Delete Button */
-    .delete-area {
+      font-size: 1.5rem;
+  }
+
+  .delete-area {
       display: flex;
-      justify-content: center;
       align-items: center;
-      margin-left: 15px;
-    }
-  
-    .delete-btn {
-      background-color: #fff;
-      color: #e74c3c;
-      border: 1px solid #e74c3c;
-      padding: 8px 12px;
-      font-size: 0.95em;
-      border-radius: 4px;
+      justify-content: center;
+  }
+
+  .delete-btn {
+      background-color: var(--text-white);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      padding: 10px 15px;
+      font-size: 1.1rem;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
-    }
-  
-    .delete-btn:hover {
-      background-color: #e74c3c;
-      color: #fff;
-      border-color: #c0392b;
-    }
-  
-    /* Empty Cart Message */
-    .empty-cart-text {
+      text-transform: uppercase;
+  }
+
+  .delete-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--text-white);
+  }
+
+  /* Empty Cart Message */
+  .empty-cart-text {
       text-align: center;
-      color: #333;
-      margin-top: 10em;
-      font-size: 1.5em;
-    }
-  </style>
-  
+      color: var(--text-black);
+      margin-top: 5rem;
+      font-size: 1.5rem;
+  }
+</style>

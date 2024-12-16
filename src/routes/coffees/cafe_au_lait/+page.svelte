@@ -4,7 +4,7 @@
     let coffeeOptions = [];
     let selectedCoffeeCategory = "Cafe au Lait"; 
     let errorMessage = '';
-    let fetchURL = `http://localhost:8000/api/coffeeOptionsApi/${selectedCoffeeCategory}`;
+    let fetchURL = `http://localhost:8000/api/coffees/${selectedCoffeeCategory}`;
 
     console.log(fetchURL);
 

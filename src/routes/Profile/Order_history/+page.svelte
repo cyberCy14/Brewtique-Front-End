@@ -50,15 +50,13 @@
         gap: 20px;
     }
 
-   
-
     /* Order History Section */
     .order-history {
         flex: 1;
         background-color: white;
         padding: 20px;
         border-radius: 8px;
-        margin-top: 8rem;
+        margin-top: 1rem;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 

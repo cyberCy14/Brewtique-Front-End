@@ -5,6 +5,18 @@
     let coffeeItems = [];
     let errorMessage = '';
 
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; 
+        }
+        return array;
+    }
+
+
+
+
     onMount(async () => {
         try {
             const response = await fetch('http://localhost:8000/api/coffees', {
@@ -19,7 +31,9 @@
                 // throw new Error('Failed to fetch random coffee items.');
             }
 
-            coffeeItems = await response.json();
+            const allCoffees = await response.json();
+            coffeeItems = shuffleArray(allCoffees).slice(0, 10);
+
         } catch (error) {
             errorMessage = 'Error fetching coffee items.';
             console.error('Error fetching coffee items:', error);
@@ -47,7 +61,7 @@
     <section>
 
         <div class="container">
-            <h2 class="text">Our Best Sellers</h2>
+            <h2 class="text">Coffees We Sell</h2>
 
             <div class="scroll-container">
                 <button class="arrow left" on:click={scrollLeft}> ❮ </button>
